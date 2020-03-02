@@ -157,7 +157,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
             - [x] Country view with map and informations + last update date
 
-            - [ ] Add siri shorcuts features
+            - [ ] Refresh in background
+
+            - [ ] Add notifications if country overpass amount of confirmed or deaths
 
             - [ ] Fix Cells constraints (bug when changing orientation)
 
