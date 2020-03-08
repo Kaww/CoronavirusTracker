@@ -243,9 +243,15 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         collectionView.reloadData()
     }
+}
 
-    
-    // MARK: -- COLLECTION VIEW DELEGATES
+
+
+// -----------------------------------
+// MARK: -- COLLECTION VIEW DELEGATES
+// ---------------------------------
+
+extension ViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
@@ -313,14 +319,18 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
-    
-    // MARK: -- SEARCH RESULTS UPDATER DELEGATES
-    
+}
+
+
+
+// ------------------------------------------
+// MARK: -- SEARCH RESULTS UPDATER DELEGATES
+// ----------------------------------------
+
+extension ViewController {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         isSearching = text.count > 0
         filterCountriesBy(name: text)
     }
 }
-

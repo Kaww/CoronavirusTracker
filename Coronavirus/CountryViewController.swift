@@ -29,7 +29,6 @@ class CountryViewController: UIViewController, MKMapViewDelegate {
     // MARK: -- SETUP METHODS
     
     private func setupMap() {
-//        map.backgroundColor = .systemGray
         map.layer.cornerRadius = 15
         map.mapType = .standard
         
@@ -92,9 +91,4 @@ class CountryViewController: UIViewController, MKMapViewDelegate {
         lastUpdateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         lastUpdateLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 50).isActive = true
     }
-    
-    
-    // MARK: -- CLASS METHODS
-    
-    //...
 }
