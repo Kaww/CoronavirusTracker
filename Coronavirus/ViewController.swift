@@ -45,6 +45,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         setupActivityIndicator()
         getSavedData()
         loadData(withIndicator: true)
+        
     }
 
     
@@ -156,6 +157,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             - [x]  Add API sources (at the buttom of the screen ?)
 
             - [x] Country view with map and informations + last update date
+
+            - [ ] CollectionView animations
+
+            - [ ] Drag to reload
 
             - [ ] Refresh in background
 
