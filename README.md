@@ -23,7 +23,11 @@ All the app have been made using code only. No storyboards.
 
 ## CollectionView animations
 
-See *@objc private func animateCollectionView()* in file *./viewController.swift*
+In file *./viewController.swift*, check :
+
+```swift
+@objc private func animateCollectionView()
+```
 
 ## Requests & JSON Data managment
 
