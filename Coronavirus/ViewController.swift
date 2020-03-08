@@ -28,6 +28,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+    var isSearching = false
+    
     var lastUpdate: String?
     
     let refreshControl = UIRefreshControl()
@@ -38,7 +40,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         
         title = "Coronavirus"
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshWithIndicator))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showRoadMap))
         
         
@@ -48,6 +50,11 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         setupActivityIndicator()
         getSavedData()
         loadData(withIndicator: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        animateCollectionView()
     }
     
     
@@ -88,6 +95,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if showIndicator {
             toggleActivityIndicator()
         }
+        
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.countries = CoronavirusAPI.getCountries()
             
@@ -110,6 +118,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.reloadData()
                 self?.refreshControl.endRefreshing()
+                
                 if showIndicator {
                     self?.toggleActivityIndicator()
                 }
@@ -151,8 +160,34 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    @objc func refresh() {
-        loadData(withIndicator: false)
+    @objc private func refresh() {
+        if !isSearching {
+            loadData(withIndicator: false)
+        }
+    }
+    
+    @objc private func refreshWithIndicator() {
+        loadData(withIndicator: true)
+    }
+    
+    @objc private func animateCollectionView() {
+        let items = collectionView.visibleCells.sorted(by: { $0.layer.position.y < $1.layer.position.y })
+        
+        if items.count > 0 {
+            let height = collectionView.bounds.size.height
+            
+            for item in items {
+                item.transform = CGAffineTransform(translationX: 0, y: height + 90)
+            }
+            
+            var delayCounter: Double = 0
+            for item in items {
+                UIView.animate(withDuration: 1, delay: delayCounter * 0.025, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    item.transform = .identity
+                }, completion: nil)
+                delayCounter += 1
+            }
+        }
     }
 
     @objc func showRoadMap() {
@@ -160,13 +195,13 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
             - [x]  Header with sums of each displayed countries
 
-            - [ ]  Fix scrolling bug on search
+            - [x]  Fix scrolling bug on search
 
             - [x]  Add API sources (at the buttom of the screen ?)
 
             - [x] Country view with map and informations + last update date
 
-            - [ ] CollectionView animations
+            - [x] CollectionView animations
 
             - [x] Drag to reload
 
@@ -282,6 +317,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
+        isSearching = text.count > 0
         filterCountriesBy(name: text)
     }
 }

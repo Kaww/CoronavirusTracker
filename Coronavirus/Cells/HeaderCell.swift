@@ -19,7 +19,8 @@ class HeaderCell: UICollectionViewCell {
     var countries: [Country]? {
         didSet {
             if let countries = countries {
-                titleLabel.text = "Total: \(countries.count)"
+                let recoveredPercentage = getRecoveredPercentage(countries)
+                titleLabel.text = "\(countries.count) countries, \(recoveredPercentage)% recovered"
                 confirmedLabel.text = "🤒 \(getTotalConfirmed(countries))"
                 recoveredLabel.text = "😀 \(getTotalRecovered(countries))"
                 deathsLabel.text = "☠️ \(getTotalDeaths(countries))"
@@ -128,6 +129,17 @@ class HeaderCell: UICollectionViewCell {
         }
         
         return totalDeaths
+    }
+    
+    private func getRecoveredPercentage(_ countries: [Country]) -> Double {
+        let totalConfirmed = Double(getTotalConfirmed(countries))
+        let totalRecovered = Double(getTotalRecovered(countries))
+        
+        if totalConfirmed == 0 {
+            return 0.0
+        }
+        
+        return round(totalRecovered / totalConfirmed * 1000) / 10
     }
     
     required init?(coder: NSCoder) {
