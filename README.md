@@ -35,7 +35,7 @@ All the app have been made using code only. No storyboards.
 
 Requests can be very easily done. Here I'm requesting an URL that return JSON data. Here is how it's done :
 
--> Managers/CoronavirusAPI.swift
+-> *Managers/CoronavirusAPI.swift*
 
 ```swift
 if let url = URL(string: endpoint) {
@@ -48,6 +48,43 @@ if let url = URL(string: endpoint) {
 ### JSON Parsing
 
 ...
+
+## Pull-to-refresh control
+
+Adding a *pull-to-refresh* feature to a **collectionView** or **tableView** is very simple.
+
+First, add the **UIRefreshControl** to your **viewController**:
+
+```swift
+let refreshControl = UIRefreshControl()
+```
+
+In the **viewDidLoad** method, setup the target action and add the **refreshControl** to the **collectionView/tableView**:
+
+```swift
+refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+collectionView.refreshControl = refreshControl
+```
+
+The refresh method should be like this:
+
+```swift
+@objc func refresh() {
+    // refresh stuff...
+}
+```
+
+When the refresh action is done, stop the refreshing by adding:
+
+```swift
+@objc func refresh() {
+    // refresh stuff...
+    // ...
+    
+    refreshControl.endRefreshing()
+}
+```
+
 
 ## Manage background tasks
 
