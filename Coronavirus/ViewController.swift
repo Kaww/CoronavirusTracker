@@ -30,6 +30,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var lastUpdate: String?
     
+    let refreshControl = UIRefreshControl()
     let searchController = UISearchController(searchResultsController: nil)
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
@@ -37,19 +38,25 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         
         title = "Coronavirus"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showRoadMap))
         
+        
+        setupRefreshControl()
         setupSearchController()
         setupCollectionView()
         setupActivityIndicator()
         getSavedData()
         loadData(withIndicator: true)
-        
     }
-
+    
     
     // MARK: -- SETUP METHODS
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+    }
     
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
@@ -102,6 +109,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.reloadData()
+                self?.refreshControl.endRefreshing()
                 if showIndicator {
                     self?.toggleActivityIndicator()
                 }
@@ -144,7 +152,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func refresh() {
-        loadData(withIndicator: true)
+        loadData(withIndicator: false)
     }
 
     @objc func showRoadMap() {
@@ -160,7 +168,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
             - [ ] CollectionView animations
 
-            - [ ] Drag to reload
+            - [x] Drag to reload
+
+            - [ ] Refresh when entering foreground
 
             - [ ] Refresh in background
 
