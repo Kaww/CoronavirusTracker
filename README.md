@@ -23,13 +23,41 @@ All the app have been made using code only. No storyboards.
 
 ...
 
+### Drag to reload
+
+// To be implemented
+
+### CollectionView animations
+
+// To be implemented
+
 ### Requests & JSON Data managment
+
+#### Request
+
+Requests can be very easily done. Here I'm requesting an URL that return JSON data. Here is how it's done :
+
+-> Managers/CoronavirusAPI.swift
+
+```swift
+if let url = URL(string: endpoint) {
+    if let data = try? Data(contentsOf: url) {
+        // do some stuff...
+    }
+}
+```
+
+#### JSON Parsing
 
 ...
 
 ### Manage background tasks
 
-...
+// To be implemented
+
+### Fire background notifications
+
+// To be implemented
 
 ### Save data on device
 
