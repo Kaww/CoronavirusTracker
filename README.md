@@ -21,13 +21,13 @@ All the app have been made using code only. No storyboards.
 
 ...
 
-## Drag to reload
-
-// To be implemented
-
 ## CollectionView animations
 
-// To be implemented
+In file *./viewController.swift*, check :
+
+```swift
+@objc private func animateCollectionView()
+```
 
 ## Requests & JSON Data managment
 
