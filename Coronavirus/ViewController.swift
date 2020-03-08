@@ -205,6 +205,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
             - [x] Drag to reload
 
+            - [ ] Add recovered percentage in country view
+
             - [ ] Refresh when entering foreground
 
             - [ ] Refresh in background
