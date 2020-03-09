@@ -96,7 +96,62 @@ When the refresh action is done, stop the refreshing by adding:
 
 ## Save data on device
 
-...
+For saving data on device, I'm using **UserDefaults**. This allows to encode data, and write it into the device. Then, it allows to find it back, using the associated key.
+
+### Write data on device
+
+Here is how I'm using **UserDefaults** to write the data :
+
+To write simple data, like numbers or strings, you can use
+
+```swift
+defaults.set("June 29, 2007", forKey: "lastUpdateDate")
+```
+
+To write more complex data like a class, the class need to implement the **Codable** protocol :
+
+```swift
+class Country: NSObject, Codable {
+    ...
+}
+```
+
+Then, the object can be encoded in JSON and saved as follow :
+
+```swift
+let jsonEncoder = JSONEncoder()
+
+if let data = try? jsonEncoder.encode(country) {
+    defaults.set(data, forKey: "country")
+} else {
+    print("Failed to save country.")
+}
+```
+
+### Load data from device
+
+Loading data is also very simple.
+
+To load simple data, you can use :
+
+```swift
+guard let date = defaults.string(forKey: "lastUpdateDate") else { ... }
+```
+
+To load more complex data, the data need to be decoded from JSON to the object class :
+
+```swift
+if let savedCountry = defaults.object(forKey: "country") as? Data {
+    let decoder = JSONDecoder()
+
+    do {
+        country = try decoder.decode(Country.self, from: savedCountry)
+        ...
+    } catch {
+        print("Failed to load country.")
+    }
+}
+```
 
 ## SearchBar using UISearchController
 
