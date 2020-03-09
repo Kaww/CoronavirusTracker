@@ -141,7 +141,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 filteredCountries = countries
                 collectionView.reloadData()
             } catch {
-                print("Failed to load people.")
+                print("Failed to load countries.")
             }
         }
     }
@@ -156,7 +156,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if let data = try? jsonEncoder.encode(countries) {
             defaults.set(data, forKey: "countries")
         } else {
-            print("Failed to save people data.")
+            print("Failed to save countries.")
         }
     }
     
