@@ -155,7 +155,31 @@ if let savedCountry = defaults.object(forKey: "country") as? Data {
 
 ## SearchBar using UISearchController
 
-...
+The easiest way to search through your cells in a **collectionView** or **tableView** is by using **UISearchController**.
+
+```swift
+let searchController = UISearchController(searchResultsController: nil)
+```
+
+Your **viewController** need to implement the **UISearchResultsUpdating** protocol.
+
+Then, you have to setup the searchController and assign it to the navigationController in order to add the searchBar on it.
+
+```swift
+searchController.searchResultsUpdater = self
+searchController.obscuresBackgroundDuringPresentation = false
+navigationItem.searchController = searchController
+```
+
+Finally, thank's to the **UISearchResultsUpdating** protocol, you can implement the following delegate, that will be called each time the content of the searchBar's text field is modified :
+
+```swift
+func updateSearchResults(for searchController: UISearchController) {
+    guard let text = searchController.searchBar.text else { return }
+    ...
+    // filter collectionView or tableView, and reload it
+}
+```
 
 ## MapView from MapKit
 
