@@ -13,13 +13,14 @@ class CountryViewController: UIViewController, MKMapViewDelegate {
     
     var country: Country! = nil
     
-    let map = MKMapView()
+    private let map = MKMapView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = country.country
         view.backgroundColor = .black
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
         
         setupMap()
         setupLabels()
@@ -54,52 +55,11 @@ class CountryViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func setupLabels() {
-        let confirmedLabel = UILabel()
-        confirmedLabel.text = "🤒 \(country.confirmed)"
+        let labelsStackView = getInfoLabelsStackView()
+        let recoverPercentageLabel = getRecoveredPercentageLabel()
+        let lastUpdateLabel = getLastUpdateDateLabel()
         
-        let recoveredLabel = UILabel()
-        recoveredLabel.text = "😀 \(country.recovered)"
-        
-        let deathsLabel = UILabel()
-        deathsLabel.text = "☠️ \(country.deaths)"
-        
-        let labels = [confirmedLabel, recoveredLabel, deathsLabel]
-        
-        for label in labels {
-            label.textAlignment = .center
-            label.font = .systemFont(ofSize: 18, weight: .medium)
-        }
-        
-        let labelsStackView = UIStackView(arrangedSubviews: labels)
-        labelsStackView.axis = .horizontal
-        labelsStackView.distribution = .equalSpacing
-        view.addSubview(labelsStackView)
-        
-//        labelsStackView.translatesAutoresizingMaskIntoConstraints = false
-//        labelsStackView.topAnchor.constraint(equalTo: map.bottomAnchor, constant: 10).isActive = true
-//        labelsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        labelsStackView.widthAnchor.constraint(equalToConstant: view.frame.width - 50).isActive = true
-        
-        let recoverPercentageLabel = UILabel()
-        recoverPercentageLabel.text = "\(getRecoveredPercentage())% recovered"
-        recoverPercentageLabel.textAlignment = .center
-        recoverPercentageLabel.font = .systemFont(ofSize: 18, weight: .medium)
-        view.addSubview(recoverPercentageLabel)
-        
-//        recoverPercentageLabel.translatesAutoresizingMaskIntoConstraints = false
-//        recoverPercentageLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 15).isActive = true
-//        recoverPercentageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        recoverPercentageLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 50).isActive = true
-        
-        let lastUpdateLabel = UILabel()
-        lastUpdateLabel.text = "Last update: \(country.lastUpdate)"
-        lastUpdateLabel.textAlignment = .center
-        lastUpdateLabel.font = .systemFont(ofSize: 15)
-        view.addSubview(lastUpdateLabel)
-        
-        let subViews = [labelsStackView, recoverPercentageLabel, lastUpdateLabel]
-        
-        let infosStackView = UIStackView(arrangedSubviews: subViews)
+        let infosStackView = UIStackView(arrangedSubviews: [labelsStackView, recoverPercentageLabel, lastUpdateLabel])
         infosStackView.axis = .vertical
         infosStackView.distribution = .equalSpacing
         infosStackView.alignment = .fill
@@ -110,11 +70,33 @@ class CountryViewController: UIViewController, MKMapViewDelegate {
         infosStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         infosStackView.widthAnchor.constraint(equalToConstant: view.frame.width - 30).isActive = true
         infosStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+    }
+    
+    private func getInfoLabelsStackView() -> UIStackView {
+        let confirmedLabel = UILabel()
+        confirmedLabel.text = "🤒 \(country.confirmed)"
+        let recoveredLabel = UILabel()
+        recoveredLabel.text = "😀 \(country.recovered)"
+        let deathsLabel = UILabel()
+        deathsLabel.text = "☠️ \(country.deaths)"
         
-//        lastUpdateLabel.translatesAutoresizingMaskIntoConstraints = false
-//        lastUpdateLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20).isActive = true
-//        lastUpdateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        lastUpdateLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 50).isActive = true
+        for label in [confirmedLabel, recoveredLabel, deathsLabel] {
+            label.textAlignment = .center
+            label.font = .systemFont(ofSize: 18, weight: .medium)
+        }
+        
+        let labelsStackView = UIStackView(arrangedSubviews: [confirmedLabel, recoveredLabel, deathsLabel])
+        labelsStackView.axis = .horizontal
+        labelsStackView.distribution = .equalSpacing
+        return labelsStackView
+    }
+    
+    private func getRecoveredPercentageLabel() -> UILabel {
+        let recoverPercentageLabel = UILabel()
+        recoverPercentageLabel.text = "\(getRecoveredPercentage())% recovered"
+        recoverPercentageLabel.textAlignment = .center
+        recoverPercentageLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        return recoverPercentageLabel
     }
     
     private func getRecoveredPercentage() -> Double {
@@ -126,5 +108,24 @@ class CountryViewController: UIViewController, MKMapViewDelegate {
         }
         
         return round(totalRecovered / totalConfirmed * 1000) / 10
+    }
+    
+    private func getLastUpdateDateLabel() -> UILabel {
+        let lastUpdateLabel = UILabel()
+        lastUpdateLabel.text = "Last update: \(country.lastUpdate)"
+        lastUpdateLabel.textAlignment = .center
+        lastUpdateLabel.font = .systemFont(ofSize: 15)
+        return lastUpdateLabel
+    }
+    
+    
+    // MARK: -- CLASS METHODS
+    
+    @objc private func share() {
+        let message = "\(country.country):\n\n\(country.confirmed) confirmed.\n\(country.recovered) recovered.\n\(country.deaths) deaths.\n\n\(getRecoveredPercentage())% of confirmed are recovered.\n\nLast update: \(country.lastUpdate)."
+        let vc = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        
+        present(vc, animated: true)
     }
 }

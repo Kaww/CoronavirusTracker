@@ -10,13 +10,13 @@ import UIKit
 
 class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchResultsUpdating {
 
-    let cellID = "cellID"
-    let headerID = "headerID"
-    let footerID = "footerID"
+    private let cellID = "cellID"
+    private let headerID = "headerID"
+    private let footerID = "footerID"
     
-    var countries = [Country]()
-    var filteredCountries = [Country]()
-    var isLoading = false {
+    private var countries = [Country]()
+    private var filteredCountries = [Country]()
+    private var isLoading = false {
         didSet {
             if isLoading {
                 searchController.searchBar.isUserInteractionEnabled = false
@@ -28,13 +28,13 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    var isSearching = false
+    private var isSearching = false
     
-    var lastUpdate: String?
+    private var lastUpdate: String?
     
-    let refreshControl = UIRefreshControl()
-    let searchController = UISearchController(searchResultsController: nil)
-    let activityIndicator = UIActivityIndicatorView(style: .large)
+    private let refreshControl = UIRefreshControl()
+    private let searchController = UISearchController(searchResultsController: nil)
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,42 +91,36 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // MARK: -- CLASS METHODS
     
-    func loadData(withIndicator showIndicator: Bool) {
+    private func loadData(withIndicator showIndicator: Bool) {
         if showIndicator {
             toggleActivityIndicator()
         }
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.countries = CoronavirusAPI.getCountries()
+            let countriesList = CoronavirusAPI.getCountries()
             
-            // - - - - - - - - - - - - - - - - - \
-            // TODO: FIX DA SCROLLING SHITTY BUG |
-            // ---------------------------------/
-            //        filteredCountries = [
-            //            countries[1],
-            //            countries[2],
-            //            countries[3],
-            //            countries[4]
-            //        ]
-            // ---------------------------------
-            if let countries = self?.countries { self?.filteredCountries = countries }
-            if let date = CoronavirusAPI.lastUpdateDate {
-                self?.lastUpdate = date
-            }
-            self?.saveData()
-            
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
-                self?.refreshControl.endRefreshing()
+            if countriesList.count > 0 {
+                self?.countries = countriesList
                 
-                if showIndicator {
-                    self?.toggleActivityIndicator()
+                if let countries = self?.countries { self?.filteredCountries = countries }
+                if let date = CoronavirusAPI.lastUpdateDate {
+                    self?.lastUpdate = date
+                }
+                self?.saveData()
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.collectionView.reloadData()
+                    self?.refreshControl.endRefreshing()
+                    
+                    if showIndicator {
+                        self?.toggleActivityIndicator()
+                    }
                 }
             }
         }
     }
     
-    func getSavedData() {
+    private func getSavedData() {
         let defaults = UserDefaults.standard
         
         if let date = defaults.string(forKey: "lastUpdateDate") {
@@ -146,7 +140,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    func saveData() {
+    private func saveData() {
         let defaults = UserDefaults.standard
         
         defaults.set(CoronavirusAPI.lastUpdateDate, forKey: "lastUpdateDate")
@@ -190,7 +184,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
 
-    @objc func showRoadMap() {
+    @objc private func showRoadMap() {
         let message = """
 
             - [x]  Header with sums of each displayed countries
@@ -206,6 +200,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             - [x] Drag to reload
 
             - [x] Add recovered percentage in country view
+
+            - [ ] Sharing features
 
             - [ ] Refresh when entering foreground
 
