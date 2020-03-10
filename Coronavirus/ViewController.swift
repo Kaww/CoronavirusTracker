@@ -201,7 +201,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
             - [x] Add recovered percentage in country view
 
-            - [ ] Sharing features
+            - [x] Sharing features
 
             - [ ] Refresh when entering foreground
 
