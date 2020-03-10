@@ -29,6 +29,49 @@ In file *./viewController.swift*, check :
 @objc private func animateCollectionView()
 ```
 
+## Share sheet
+
+To use the share sheet to share data, you need to use the **UIActivityViewController**.
+
+First, create the button:
+
+```swift
+navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
+```
+
+Then, declare the share method :
+
+```swift
+@objc private func share() {
+    ...
+}
+```
+
+Prepare the content you want to share. It can be any type (*Any*). Then instanciate the **UIActivityViewController** :
+
+```swift
+let message = "Hello world 42"
+let vc = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+```
+
+One important thing is to setup the **popoverPresentationController**. It's used for the iPad share sheet that is pointing on the touched button. So do like this :
+
+```swift
+vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+```
+
+Finally, present the view.
+
+```swift
+@objc private func share() {
+    let message = "Hello world 42"
+    let vc = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+    vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+
+    present(vc, animated: true)
+}
+```
+
 ## Requests & JSON Data managment
 
 ### Request
