@@ -32,10 +32,7 @@ class CountryCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setupLabels()
-        setupLabelsConstraints()
         setupRightImage()
-        
-        backgroundColor = .darkGray
     }
     
     override func layoutSubviews() {
@@ -48,41 +45,38 @@ class CountryCell: UICollectionViewCell {
         countryLabel.text = "..."
         countryLabel.font = .systemFont(ofSize: 20, weight: .medium)
         countryLabel.textColor = .white
-        addSubview(countryLabel)
+        countryLabel.adjustsFontSizeToFitWidth = true
         
         confirmedLabel.text = "🤒 ..."
-        confirmedLabel.font = .systemFont(ofSize: 13)
-        confirmedLabel.textColor = .white
-        confirmedLabel.textAlignment = .center
-        
         recoveredLabel.text = "😀 ..."
-        recoveredLabel.font = .systemFont(ofSize: 13)
-        recoveredLabel.textColor = .white
-        recoveredLabel.textAlignment = .center
-        
         deathsLabel.text = "☠️ ..."
-        deathsLabel.font = .systemFont(ofSize: 13)
-        deathsLabel.textColor = .white
-        deathsLabel.textAlignment = .center
         
-        let stackView = UIStackView(arrangedSubviews: [confirmedLabel, recoveredLabel, deathsLabel])
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        addSubview(stackView)
-        setupStackViewConstraints(stackView: stackView)
-    }
-    
-    private func setupLabelsConstraints() {
-        countryLabel.translatesAutoresizingMaskIntoConstraints = false
-        countryLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
-        countryLabel.centerYAnchor.constraint(equalTo: topAnchor, constant: frame.height / 3).isActive = true
+        for label in [confirmedLabel, recoveredLabel, deathsLabel] {
+            label.font = .systemFont(ofSize: 13)
+            label.textColor = .white
+            label.textAlignment = .center
+        }
+        
+        let infoLabelsStackView = UIStackView(arrangedSubviews: [confirmedLabel, recoveredLabel, deathsLabel])
+        infoLabelsStackView.axis = .horizontal
+        infoLabelsStackView.distribution = .equalSpacing
+        
+        let mainStackView = UIStackView(arrangedSubviews: [countryLabel, infoLabelsStackView])
+        mainStackView.axis = .vertical
+        mainStackView.distribution = .fillEqually
+        mainStackView.alignment = .fill
+        
+        addSubview(mainStackView)
+        
+        setupStackViewConstraints(stackView: mainStackView)
     }
     
     private func setupStackViewConstraints(stackView: UIStackView) {
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: topAnchor, constant: frame.height * 3 / 5).isActive = true
-        stackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        stackView.widthAnchor.constraint(equalTo: widthAnchor, constant: -40).isActive = true
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
+        stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -40).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
     }
     
     private func setupRightImage() {

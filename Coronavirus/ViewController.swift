@@ -209,7 +209,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
             - [ ] Add notifications if country overpass amount of confirmed or deaths
 
-            - [ ] Fix Cells constraints (bug when changing orientation)
+            - [x] Fix Cells constraints (bug when changing orientation)
 
             - [ ] Manage dark and white mode
 
@@ -284,7 +284,7 @@ extension ViewController {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.frame.width - 20
-        let height = width * 0.3
+        let height: CGFloat = 90.0// width * 0.3
         
         if indexPath.section == 0 {
             return .init(width: width, height: height * 0.75)

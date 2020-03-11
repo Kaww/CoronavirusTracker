@@ -45,7 +45,6 @@ class HeaderCell: UICollectionViewCell {
         backgroundColor = ColorManager.headerBackgroundColor
         
         setupLabels()
-        setupLabelsConstraints()
     }
     
     override func layoutSubviews() {
@@ -57,48 +56,47 @@ class HeaderCell: UICollectionViewCell {
     private func setupLabels() {
         titleLabel.text = "Total: 0"
         titleLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        titleLabel.textAlignment = .center
         titleLabel.textColor = .white
-        addSubview(titleLabel)
         
         confirmedLabel.text = "🤒 0"
-        confirmedLabel.font = .systemFont(ofSize: 13)
-        confirmedLabel.textColor = .white
-        confirmedLabel.textAlignment = .center
-        
         recoveredLabel.text = "😀 0"
-        recoveredLabel.font = .systemFont(ofSize: 13)
-        recoveredLabel.textColor = .white
-        recoveredLabel.textAlignment = .center
-        
         deathsLabel.text = "☠️ 0"
-        deathsLabel.font = .systemFont(ofSize: 13)
-        deathsLabel.textColor = .white
-        deathsLabel.textAlignment = .center
         
-        let stackView = UIStackView(arrangedSubviews: [confirmedLabel, recoveredLabel, deathsLabel])
-        stackView.axis = .horizontal
+        for label in [confirmedLabel, recoveredLabel, deathsLabel] {
+            label.font = .systemFont(ofSize: 13)
+            label.textColor = .white
+            label.textAlignment = .center
+        }
+        
+        let infosStackView = UIStackView(arrangedSubviews: [confirmedLabel, recoveredLabel, deathsLabel])
+        infosStackView.axis = .horizontal
+        infosStackView.distribution = .equalSpacing
+        
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, infosStackView])
+        stackView.axis = .vertical
         stackView.distribution = .fillEqually
+        stackView.alignment = .fill
         addSubview(stackView)
+        
+        setupStackViewConstraints(stackView: stackView)
         
         lastUpdateLabel.text = ""
         lastUpdateLabel.font = .systemFont(ofSize: 12)
         addSubview(lastUpdateLabel)
         
-        setupStackViewConstraints(stackView: stackView)
+        setupLastUpdateLabelConstraints()
     }
     
     private func setupStackViewConstraints(stackView: UIStackView) {
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: topAnchor, constant: frame.height * 0.75).isActive = true
-        stackView.widthAnchor.constraint(equalTo: widthAnchor, constant: -40).isActive = true
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
+        stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
     }
     
-    private func setupLabelsConstraints() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        titleLabel.centerYAnchor.constraint(equalTo: topAnchor, constant: frame.height / 3).isActive = true
-        
+    private func setupLastUpdateLabelConstraints() {
         lastUpdateLabel.translatesAutoresizingMaskIntoConstraints = false
         lastUpdateLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         lastUpdateLabel.topAnchor.constraint(equalTo: bottomAnchor, constant: 5).isActive = true
