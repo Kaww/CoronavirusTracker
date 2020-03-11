@@ -245,6 +245,8 @@ let map = MKMapView()
 view.addSubview(map)
 ```
 
+You also need to setup the contraints of the map.
+
 ### Customize the map
 
 Let's add some annotations to the map.
