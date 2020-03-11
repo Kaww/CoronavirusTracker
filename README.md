@@ -9,6 +9,19 @@ This application is for educational purpose.
 Here are the list of all the feature implemented in the app.
 All the app have been made using code only. No storyboards.
 
+- NavigationController programmatically
+- Constraints by code
+- CollectionView & custom cells
+- CollectionView animations
+- Share sheet
+- Requests & JSON Data managment
+- Pull-to-refresh control
+- Manage background tasks
+- Fire background notifications
+- Save data on device
+- SearchBar using UISearchController
+- MapView from MapKit
+
 ## NavigationController programmatically
 
 ...
@@ -23,7 +36,7 @@ All the app have been made using code only. No storyboards.
 
 ## CollectionView animations
 
-In file *./viewController.swift*, check :
+In file _./viewController.swift_, check :
 
 ```swift
 @objc private func animateCollectionView()
@@ -47,7 +60,7 @@ Then, declare the share method :
 }
 ```
 
-Prepare the content you want to share. It can be any type (*Any*). Then instanciate the **UIActivityViewController** :
+Prepare the content you want to share. It can be any type (_Any_). Then instanciate the **UIActivityViewController** :
 
 ```swift
 let message = "Hello world 42"
@@ -78,7 +91,7 @@ Finally, present the view.
 
 Requests can be very easily done. Here I'm requesting an URL that return JSON data. Here is how it's done :
 
--> *Managers/CoronavirusAPI.swift*
+-> _Managers/CoronavirusAPI.swift_
 
 ```swift
 if let url = URL(string: endpoint) {
@@ -94,7 +107,7 @@ if let url = URL(string: endpoint) {
 
 ## Pull-to-refresh control
 
-Adding a *pull-to-refresh* feature to a **collectionView** or **tableView** is very simple.
+Adding a _pull-to-refresh_ feature to a **collectionView** or **tableView** is very simple.
 
 First, add the **UIRefreshControl** to your **viewController**:
 
@@ -123,11 +136,10 @@ When the refresh action is done, stop the refreshing by adding:
 @objc func refresh() {
     // refresh stuff...
     // ...
-    
+
     refreshControl.endRefreshing()
 }
 ```
-
 
 ## Manage background tasks
 
