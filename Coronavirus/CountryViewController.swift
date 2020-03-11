@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class CountryViewController: UIViewController, MKMapViewDelegate {
+class CountryViewController: UIViewController, MKMapViewDelegate, UIActivityItemSource {
     
     var country: Country! = nil
     
@@ -122,10 +122,25 @@ class CountryViewController: UIViewController, MKMapViewDelegate {
     // MARK: -- CLASS METHODS
     
     @objc private func share() {
-        let message = "\(country.country):\n\n\(country.confirmed) confirmed.\n\(country.recovered) recovered.\n\(country.deaths) deaths.\n\n\(getRecoveredPercentage())% of confirmed are recovered.\n\nLast update: \(country.lastUpdate)."
-        let vc = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        let vc = UIActivityViewController(activityItems: [self], applicationActivities: nil)
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
         present(vc, animated: true)
+    }
+    
+    
+    // MARK: -- ACTIVITY CONTROLLER DELEGATES
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return country.country
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        let message = "\(country.country) Report:\n\n\(country.confirmed) confirmed.\n\(country.recovered) recovered.\n\(country.deaths) deaths.\n\n\(getRecoveredPercentage())% of confirmed are recovered.\n\nLast update: \(country.lastUpdate)."
+        return message
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return "Coronavirus \(country.country) report"
     }
 }
