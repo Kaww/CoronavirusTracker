@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class CountryViewController: UIViewController, MKMapViewDelegate, UIActivityItemSource {
+class CountryViewController: UIViewController, UIActivityItemSource {
     
     var country: Country! = nil
     

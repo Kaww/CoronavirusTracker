@@ -238,4 +238,32 @@ func updateSearchResults(for searchController: UISearchController) {
 
 ## MapView from MapKit
 
-...
+Using a **MKMapView**, is easy. Create a MKMapView instance and add it to the view:
+
+```swift
+let map = MKMapView()
+view.addSubview(map)
+```
+
+### Customize the map
+
+Let's add some annotations to the map.
+
+```swift
+let annotation = MKPointAnnotation()
+annotation.coordinate = CLLocationCoordinate2D(latitude: country.latitude, longitude: country.longitude)
+annotation.title = "Country name"
+annotation.subtitle = "\(country.confirmed) confirmed"
+map.addAnnotation(annotation)
+```
+
+Now the map contains a new annotations. You can add as much as you want.
+
+But the map do not focus the new annotation. To do that, you need to setup the _region_:
+
+```swift
+let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 1000000, longitudinalMeters: 1000000)
+map.setRegion(region, animated: true)
+```
+
+The _latitudinalMeters_ and _longitudinalMeters_ parameters are acting like a zoom level.
