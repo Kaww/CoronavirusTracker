@@ -21,7 +21,7 @@ class CoronavirusAPI {
                 guard let jsonFeatures = try? JSONDecoder().decode(FeaturesJSON.self, from: data) else { return [] }
                 
                 var featureDictionary = [String: CountryJSON]()
-                
+
                 for feature in jsonFeatures.features {
                     let key = feature.attributes.Country_Region
                     if featureDictionary[key] != nil {
@@ -35,15 +35,15 @@ class CoronavirusAPI {
                         featureDictionary[key] = feature.attributes
                     }
                 }
-                
+
                 setLastUpdateDate(features: jsonFeatures.features)
-                
+
                 var countries = [Country]()
-                
+
                 for country in featureDictionary.values {
-                    countries.append(Country(country: country.Country_Region, longitude: country.Long_, latitude: country.Lat, confirmed: country.Confirmed, recovered: country.Recovered, deaths: country.Deaths, lastUpdate: getReadableDate(milliseconds: country.Last_Update / 1000.0)))
+                    countries.append(Country(country: country.Country_Region, longitude: country.Long_ ?? 0, latitude: country.Lat ?? 0, confirmed: country.Confirmed, recovered: country.Recovered, deaths: country.Deaths, lastUpdate: getReadableDate(milliseconds: country.Last_Update / 1000.0)))
                 }
-                
+
                 return countries.sorted(by: { $0.confirmed > $1.confirmed })
             }
         }

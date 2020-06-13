@@ -19,11 +19,11 @@ class ColorManager {
     static let footerTextColor: UIColor = .systemGray
     
     static func getColorFrom(infected: Int) -> UIColor {
-        if infected >= 10000 {
+        if infected >= 200000 {
             return highColor
-        } else if infected >= 1000 {
+        } else if infected >= 50000 {
             return mediumColor
-        } else if infected >= 200 {
+        } else if infected >= 10000 {
             return lowColor
         }
         return normalColor

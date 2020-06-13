@@ -40,9 +40,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         
         title = "Coronavirus"
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshWithIndicator))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showRoadMap))
-        
         
         setupRefreshControl()
         setupSearchController()
@@ -182,45 +179,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 delayCounter += 1
             }
         }
-    }
-
-    @objc private func showRoadMap() {
-        let message = """
-
-            - [x]  Header with sums of each displayed countries
-
-            - [x]  Fix scrolling bug on search
-
-            - [x]  Add API sources (at the buttom of the screen ?)
-
-            - [x] Country view with map and informations + last update date
-
-            - [x] CollectionView animations
-
-            - [x] Drag to reload
-
-            - [x] Add recovered percentage in country view
-
-            - [x] Sharing features
-
-            - [ ] Refresh when entering foreground
-
-            - [ ] Refresh in background
-
-            - [ ] Add notifications if country overpass amount of confirmed or deaths
-
-            - [x] Fix Cells constraints (bug when changing orientation)
-
-            - [ ] Manage dark and white mode
-
-            - [x] Load data in background + add loader
-
-            - [x] User defaults for offline mode
-        """
-        let ac = UIAlertController(title: "Road map 🗺", message: message, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "🔥", style: .default))
-        
-        present(ac, animated: true)
     }
     
     private func filterCountriesBy(name: String) {

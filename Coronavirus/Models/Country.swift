@@ -54,8 +54,8 @@ struct FeatureJSON: Codable {
 
 struct CountryJSON: Codable {
     var Country_Region: String
-    var Long_: Double
-    var Lat: Double
+    var Long_: Double?
+    var Lat: Double?
     var Confirmed: Int
     var Recovered: Int
     var Deaths: Int
